@@ -3,7 +3,10 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['src/**', 'package.json', '.github/workflows/render-video.yml']
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - '.github/workflows/render-video.yml'
 permissions:
   contents: read
 jobs:
@@ -15,13 +18,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-                - name: Install Arabic font
+      - name: Install Arabic font
         run: sudo apt-get update && sudo apt-get install -y fonts-noto-core
       - name: Install dependencies
         run: npm install --no-audit --no-fund
       - name: Type check
         run: npm run check
-      - name: Render 1080x1920 MP4
+      - name: Render MP4
         run: npx remotion render src/index.ts CoachAd out/coach-ad.mp4 --codec h264 --concurrency 2
       - name: Upload MP4
         uses: actions/upload-artifact@v4
